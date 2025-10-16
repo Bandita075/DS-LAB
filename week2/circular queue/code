@@ -1,0 +1,93 @@
+#include <stdio.h>
+#define MAX 5
+
+int queue_array[MAX];
+int front = -1;
+int rear = -1;
+
+int isFull() {
+    return ((front == (rear + 1) % MAX));
+}
+
+int isEmpty() {
+    return (front == -1);
+}
+
+void enQueue(int element) {
+    if (isFull()) {
+        printf("Queue is full\n");
+        return;
+    }
+
+    if (isEmpty()) {
+        front = 0;
+    }
+
+    rear = (rear + 1) % MAX;
+    queue_array[rear] = element;
+    printf("Element inserted: %d\n", element);
+}
+
+int deQueue() {
+    int element;
+
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return -1;
+    }
+
+    element = queue_array[front];
+
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } else {
+        front = (front + 1) % MAX;
+    }
+
+    printf("Deleted element: %d\n", element);
+    return element;
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    printf("Queue elements: ");
+    int i = front;
+    while (1) {
+        printf("%d ", queue_array[i]);
+        if (i == rear) break;
+        i = (i + 1) % MAX;
+    }
+    printf("\n");
+}
+
+int main() {
+    int choice, element;
+
+    while (1) {
+        printf("\n1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter element to insert: ");
+                scanf("%d", &element);
+                enQueue(element);
+                break;
+            case 2:
+                deQueue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
