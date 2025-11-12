@@ -1,1 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+
+struct Node* createNode(int value) {
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a node at a specific position
+void insertPosition(int value, int position) {
+    struct Node *newNode = createNode(value);
+
+    if (position == 1) {
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
+
+    struct Node *temp = head;
+    for (int i = 1; temp != NULL && i < position - 1; i++) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Position out of range\n");
+        free(newNode);
+        return;
+    }
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+
+void display() {
+    struct Node *temp = head;
+    if (temp == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    printf("Linked List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    insertPosition(10, 1);
+    insertPosition(20, 2);
+    insertPosition(30, 3);
+    insertPosition(15, 2);
+    insertPosition(5, 1);
+    insertPosition(50, 10); 
+    display();
+
+    return 0;
+}
 
